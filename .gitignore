@@ -1,2 +1,8 @@
-#htaccess
-/public/.htaccess
+
+#composer 
+composer.json
+/vendor/
+
+
+#environement
+.env

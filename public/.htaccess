@@ -1,1 +1,11 @@
-DirectoryIndex /public/index.php
+<IfModule mod_rewrite.c>
+  Options -Multiviews
+  RewriteEngine On
+  RewriteBase /spender-v2/public
+
+  RewriteCond %{REQUEST_FILENAME} -f [OR]
+  RewriteCond %{REQUEST_FILENAME} -d
+  RewriteRule ^ - [L]
+
+  RewriteRule ^(.+)$ index.php?url=$1 [QSA,L]
+</IfModule>
