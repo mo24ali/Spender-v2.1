@@ -6,7 +6,7 @@ namespace App\Core;
 use PDO;
 use PDOException;
 
-use function App\public\dump_die;
+// use function App\public\dump_die;
 
 class Database
 {
@@ -26,5 +26,21 @@ class Database
         } catch (PDOException $pe) {
             die("Connection error due to this =>  " . $pe->getMessage());
         }
+    }
+
+
+    public static function getInstance(): Database
+    {
+        if (!isset(self::$conn)) {
+            self::$instance = new self();
+        }
+        return self::$instance;
+    }
+
+
+
+    public function getConnection()
+    {
+        return self::$conn;
     }
 }
