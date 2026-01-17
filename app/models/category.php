@@ -1,51 +1,24 @@
 <?php
 
-
-
 namespace App\Models;
 
-use App\Core\Model;
+use App\Core\Database;
+use PDO;
 
-
-class Category extends Model
+class Category
 {
+    private $db;
 
-
-    private int $id;
-    private string $name;
-    private float $monthlyIncome;
-
-
-    public function __construct(string $newName)
+    public function __construct()
     {
-        $this->name = $newName;
+        $this->db = Database::getInstance()->getConnection();
     }
 
-    public function getId()
+    public function getAll($userId)
     {
-        return $this->id;
-    }
-    public function getName()
-    {
-        return $this->name;
-    }
-
-    public function setId(int $newId)
-    {
-        $this->id = $newId;
-    }
-
-    public function setName(string $newName)
-    {
-        $this->name = $newName;
-    }
-
-  
-
-
-
-    public function __toString(): string
-    {
-        return "this category is : " . $this->getName() . " with the id of " . $this->getId();
+        $sql = "SELECT * FROM categories WHERE user_id = ? OR user_id IS NULL ORDER BY name ASC";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute([$userId]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 }

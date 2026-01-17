@@ -1,6 +1,6 @@
 <?php
 
-use Core\Controller;
+use App\Core\Controller;
 
     class CategoryController extends Controller{
         

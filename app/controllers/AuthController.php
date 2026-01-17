@@ -7,65 +7,65 @@ use App\Models\User;
 
 class AuthController extends Controller
 {
-    private User $userModel;
 
-    public function __construct()
+    public function splash()
     {
-        $this->userModel = new User();
+        require __DIR__ . '/../views/auth/splash.php';
     }
-
     public function login()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $email = $_POST['email'];
-            $password = $_POST['password'];
+            $email = $_POST['email'] ?? '';
+            $password = $_POST['password'] ?? '';
 
-            $user = $this->userModel->findByEmail($email);
+            $userModel = new User();
+            $user = $userModel->login($email, $password);
 
-            if ($user && password_verify($password, $user['password'])) {
-                if (session_status() === PHP_SESSION_NONE) {
-                    session_start();
-                }
+            if ($user) {
                 $_SESSION['user_id'] = $user['id'];
                 $_SESSION['user_name'] = $user['firstname'] . ' ' . $user['lastname'];
-                $_SESSION['user_role'] = $user['role'];
-
-                $this->redirect('/dashboard');
+                header('Location: /spender-v2/public/dashboard'); // Adjust path as needed based on Router
+                exit;
             } else {
-                $this->view('auth/login', ['error' => 'Invalid credentials']);
+                return $this->view('auth/login', ['error' => 'Invalid credentials']);
             }
-        } else {
-            $this->view('auth/login');
         }
+
+        return $this->view('auth/login');
     }
 
     public function signup()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $data = [
-                'firstname' => $_POST['firstname'],
-                'lastname' => $_POST['lastname'],
-                'email' => $_POST['email'],
-                'password' => password_hash($_POST['password'], PASSWORD_DEFAULT),
-                'role' => 'user' // Default role
-            ];
+            $firstname = $_POST['firstname'] ?? '';
+            $lastname = $_POST['lastname'] ?? '';
+            $email = $_POST['email'] ?? '';
+            $password = $_POST['password'] ?? '';
 
-            if ($this->userModel->create($data)) {
-                $this->redirect('/auth/login');
-            } else {
-                $this->view('auth/signup', ['error' => 'Registration failed. Email might be taken.']);
+            if (empty($firstname) || empty($lastname) || empty($email) || empty($password)) {
+                return $this->view('auth/register', ['error' => 'All fields are required']);
             }
-        } else {
-            $this->view('auth/signup');
+
+            $userModel = new User();
+            if ($userModel->findByEmail($email)) {
+                return $this->view('auth/register', ['error' => 'Email already exists']);
+            }
+
+            if ($userModel->register($firstname, $lastname, $email, $password)) {
+                header('Location: /spender-v2/public/auth/login');
+                exit;
+            } else {
+                return $this->view('auth/register', ['error' => 'Registration failed']);
+            }
         }
+
+        return $this->view('auth/register');
     }
 
     public function logout()
     {
-        if (session_status() === PHP_SESSION_NONE) {
-            session_start();
-        }
         session_destroy();
-        $this->redirect('/auth/login');
+        header('Location: /spender-v2/public/auth/login');
+        exit;
     }
 }

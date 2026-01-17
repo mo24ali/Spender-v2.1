@@ -23,9 +23,8 @@ class CategoryRepository implements CategoryInterface
             $sql = "insert into categories(name,monthly_limit)";
             $stmt = $this->db->prepare($sql);
             $stmt->execute([
-                $category->getName(),
-                $category->getName(),
-                $category->getName()
+              
+        
             ]);
     }
     public function save(Category $category){

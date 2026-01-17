@@ -3,28 +3,37 @@
 namespace App\Controllers;
 
 use App\Core\Controller;
+use App\Models\Transaction;
 
 class DashboardController extends Controller
 {
-    private $cardModel;
-    private $transactionModel;
-
-    public function __construct()
-    {
-        $this->cardModel = new \App\Models\Card();
-        $this->transactionModel = new \App\Models\Transaction();
-    }
-
     public function index()
     {
-        $userId = $_SESSION['user_id'];
-        $cards = $this->cardModel->getByUserId($userId);
-        $recentTransactions = $this->transactionModel->getByUserId($userId); // Assuming this returns all, limit in View or Model? Model had 'ORDER BY DESC'. Better limit here or in model.
+        if (!isset($_SESSION['user_id'])) {
+            header('Location: /spender-v2/public/auth/login');
+            exit;
+        }
 
-        $this->view('dashboard/index', [
-            'title' => 'Dashboard',
-            'cards' => $cards,
-            'recentTransactions' => array_slice($recentTransactions, 0, 5)
+        $userId = $_SESSION['user_id'];
+        $transactionModel = new Transaction();
+
+        $recentTransactions = $transactionModel->getRecent($userId);
+        $summary = $transactionModel->getSummary($userId);
+
+        $totalIncome = $summary['income'] ?? 0;
+        $totalExpense = $summary['expense'] ?? 0;
+        $balance = $totalIncome - $totalExpense;
+
+        $categoryModel = new \App\Models\Category();
+        $categories = $categoryModel->getAll($userId);
+
+        return $this->view('dashboard', [
+            'user_name' => $_SESSION['user_name'],
+            'transactions' => $recentTransactions,
+            'total_income' => $totalIncome,
+            'total_expense' => $totalExpense,
+            'balance' => $balance,
+            'categories' => $categories
         ]);
     }
 }

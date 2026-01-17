@@ -4,44 +4,66 @@ namespace App\Core;
 
 class Router
 {
-    public array $routes = [];
+    private array $routes = [];
 
     public function get(string $path, $handler)
     {
-        $this->routes['GET'][$path] = $handler;
+        $this->routes['GET'][$this->normalize($path)] = $handler;
     }
+
     public function post(string $path, $handler)
     {
-        $this->routes['POST'][$path] = $handler;
+        $this->routes['POST'][$this->normalize($path)] = $handler;
+    }
+
+    private function normalize(string $path): string
+    {
+        return '/' . trim($path, '/');
     }
 
     public function resolve()
     {
         $method = $_SERVER['REQUEST_METHOD'];
-        $path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+        $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 
-        // Remove query string and trailing slash (optional, but good for consistency)
-        // For now, simple path matching
+        // Remove base directory (/public)
+        $base = dirname($_SERVER['SCRIPT_NAME']);
+        if ($base !== '/' && str_starts_with($uri, $base)) {
+            $uri = substr($uri, strlen($base));
+        }
+
+        $path = $this->normalize($uri ?: '/');
 
         $handler = $this->routes[$method][$path] ?? null;
 
-        if ($handler) {
-            // Support [Controller::class, 'method'] format
-            if (is_array($handler)) {
-                $controller = new $handler[0]();
-                $action = $handler[1];
-                call_user_func([$controller, $action]);
-            } else {
-                $handler();
-            }
-        } else {
+        if (!$handler) {
             $this->handleNotFound();
+            return;
         }
+
+        if (is_array($handler)) {
+            [$class, $method] = $handler;
+
+            if (!class_exists($class)) {
+                die("Controller $class not found");
+            }
+
+            $controller = new $class();
+
+            if (!method_exists($controller, $method)) {
+                die("Method $method not found in $class");
+            }
+
+            call_user_func([$controller, $method]);
+            return;
+        }
+
+        call_user_func($handler);
     }
 
-    public function handleNotFound()
+    private function handleNotFound()
     {
         http_response_code(404);
-        echo "404 - Not Found";
+        echo "404 - Page Not Found";
     }
 }

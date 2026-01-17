@@ -2,35 +2,53 @@
 
 namespace App\Models;
 
-use App\Core\Model;
+use App\Core\Database;
 use PDO;
 
-class User extends Model
+class User
 {
-    protected static $table = 'users';
+    private $db;
+
+    public function __construct()
+    {
+        $this->db = Database::getInstance()->getConnection();
+    }
+
+    public function register($firstname, $lastname, $email, $password)
+    {
+        $sql = "INSERT INTO users (firstname, lastname, email, password) VALUES (?, ?, ?, ?)";
+        $stmt = $this->db->prepare($sql);
+        $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
+        return $stmt->execute([$firstname, $lastname, $email, $hashedPassword]);
+    }
+
+    public function login($email, $password)
+    {
+        $sql = "SELECT * FROM users WHERE email = ?";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute([$email]);
+        $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if ($user && password_verify($password, $user['password'])) {
+            return $user;
+        }
+
+        return false;
+    }
 
     public function findByEmail($email)
     {
-        $sql = "SELECT * FROM users WHERE email = :email";
+        $sql = "SELECT * FROM users WHERE email = ?";
         $stmt = $this->db->prepare($sql);
-        $stmt->bindParam(':email', $email);
-        $stmt->execute();
+        $stmt->execute([$email]);
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
-    public function create(array $data)
+    public function findById($id)
     {
-        $sql = "INSERT INTO users (firstname, lastname, email, password, role) VALUES (:firstname, :lastname, :email, :password, :role)";
+        $sql = "SELECT * FROM users WHERE id = ?";
         $stmt = $this->db->prepare($sql);
-        return $stmt->execute([
-            ':firstname' => $data['firstname'],
-            ':lastname' => $data['lastname'],
-            ':email' => $data['email'],
-            ':password' => $data['password'],
-            ':role' => $data['role']
-        ]);
+        $stmt->execute([$id]);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
     }
-
-    // Keeping existing getters/setters if needed, but for Auth logic above is key.
-    // Removing old properties to clean up as they were likely just for demo.
 }
