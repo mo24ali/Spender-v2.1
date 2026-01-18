@@ -14,38 +14,38 @@ class Transfer extends Model
             $this->db->beginTransaction();
 
             // 1. Create Transfer Record
-            $sql = "INSERT INTO transfers (sender_id, receiver_id, amount, date) VALUES (:sender_id, :receiver_id, :amount, NOW())";
+            $sql = "INSERT INTO transfers (sender_id, receiver_id, amount, date) VALUES (?, ?, ?, NOW())";
             $stmt = $this->db->prepare($sql);
             $stmt->execute([
-                ':sender_id' => $data['sender_id'],
-                ':receiver_id' => $data['receiver_id'],
-                ':amount' => $data['amount']
+                $data['sender_id'],
+                $data['receiver_id'],
+                $data['amount']
             ]);
             $transferId = $this->db->lastInsertId();
 
             // 2. Update Sender Balance (Assuming Cards for now, or User wallet logic)
             // If sender_id represents a Card:
             if (isset($data['sender_type']) && $data['sender_type'] == 'card') {
-                $sql = "UPDATE cards SET balance = balance - :amount WHERE id = :sender_id";
+                $sql = "UPDATE cards SET balance = balance - ? WHERE id = ?";
                 $stmt = $this->db->prepare($sql);
-                $stmt->execute([':amount' => $data['amount'], ':sender_id' => $data['sender_id']]);
+                $stmt->execute([$data['amount'], $data['sender_id']]);
             }
 
             // 3. Update Receiver Balance
             if (isset($data['receiver_type']) && $data['receiver_type'] == 'card') {
-                $sql = "UPDATE cards SET balance = balance + :amount WHERE id = :receiver_id";
+                $sql = "UPDATE cards SET balance = balance + ? WHERE id = ?";
                 $stmt = $this->db->prepare($sql);
-                $stmt->execute([':amount' => $data['amount'], ':receiver_id' => $data['receiver_id']]);
+                $stmt->execute([$data['amount'], $data['receiver_id']]);
             }
 
             // 4. Log Transaction (Unified)
             $sql = "INSERT INTO transactions (title, description, user_id, type, amount, transaction_date, status, transfer_id) 
-                    VALUES ('Transfer', 'Transfer between accounts', :user_id, 'transfer', :amount, NOW(), 'completed', :transfer_id)";
+                    VALUES ('Transfer', 'Transfer between accounts', ?, 'transfer', ?, NOW(), 'completed', ?)";
             $stmt = $this->db->prepare($sql);
             $stmt->execute([
-                ':user_id' => $_SESSION['user_id'] ?? 0,
-                ':amount' => $data['amount'],
-                ':transfer_id' => $transferId
+                $_SESSION['user_id'] ?? 0,
+                $data['amount'],
+                $transferId
             ]);
 
             $this->db->commit();

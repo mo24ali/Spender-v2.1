@@ -6,70 +6,15 @@
     <title>Welcome | Smart Wallet</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="/spender-v2/public/assets/css/style.css" rel="stylesheet">
     <style>
         body {
-            margin: 0;
-            font-family: Arial, Helvetica, sans-serif;
-            background: linear-gradient(135deg, #1e293b, #0f172a);
-            color: #fff;
             display: flex;
             align-items: center;
             justify-content: center;
             height: 100vh;
-        }
-
-        .container {
-            background: #020617;
-            padding: 40px;
-            width: 100%;
-            max-width: 420px;
-            border-radius: 12px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
-            text-align: center;
-        }
-
-        h1 {
-            margin-bottom: 10px;
-        }
-
-        p {
-            color: #cbd5f5;
-            margin-bottom: 30px;
-        }
-
-        .actions a {
-            display: block;
-            padding: 14px;
-            margin-bottom: 12px;
-            border-radius: 8px;
-            text-decoration: none;
-            font-weight: bold;
-        }
-
-        .login {
-            background: #2563eb;
-            color: white;
-        }
-
-        .signup {
-            background: transparent;
-            color: #93c5fd;
-            border: 2px solid #2563eb;
-        }
-
-        .login:hover {
-            background: #1d4ed8;
-        }
-
-        .signup:hover {
-            background: #1e40af;
-            color: #fff;
-        }
-
-        footer {
-            margin-top: 20px;
-            font-size: 13px;
-            color: #94a3b8;
         }
     </style>
 </head>
@@ -77,17 +22,26 @@
 <body>
 
     <div class="container">
-        <h1>Smart Wallet</h1>
-        <p>Manage your finances securely and effortlessly</p>
+        <div class="row justify-content-center">
+            <div class="col-md-5">
+                <div class="glass-card p-5 text-center">
+                    <h1 class="text-gradient mb-3">Spender V2</h1>
+                    <p class="text-secondary mb-4">Manage your finances securely and effortlessly</p>
 
-        <div class="actions">
-            <a href="/login" class="login">Login</a>
-            <a href="/signup" class="signup">Create Account</a>
+                    <div class="actions">
+                        <a href="/spender-v2/public/auth/login"
+                            class="glass-btn w-100 d-block mb-3 text-white text-decoration-none">Login</a>
+                        <a href="/spender-v2/public/auth/signup"
+                            class="glass-btn w-100 d-block bg-transparent border border-white text-white text-decoration-none">Create
+                            Account</a>
+                    </div>
+
+                    <footer class="mt-4 text-secondary text-sm">
+                        &copy; <?= date('Y') ?> Spender V2
+                    </footer>
+                </div>
+            </div>
         </div>
-
-        <footer>
-            <?= date('Y') ?> Smart Wallet
-        </footer>
     </div>
 
 </body>

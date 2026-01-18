@@ -1,5 +1,4 @@
 <?php
-namespace App\public;
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
@@ -11,19 +10,59 @@ use App\Controllers\TransactionController;
 $app = new App();
 $router = $app->getRouter();
 
-$router->get('/', [AuthController::class, 'splash']);
-$router->get('/auth/login', [AuthController::class, 'login']);
-$router->post('/auth/login', [AuthController::class, 'login']);
-$router->get('/auth/signup', [AuthController::class, 'signup']);
-$router->post('/auth/signup', [AuthController::class, 'signup']);
-$router->get('/auth/logout', [AuthController::class, 'logout']);
+/*
+|--------------------------------------------------------------------------
+| Splash & Auth Routes
+|--------------------------------------------------------------------------
+*/
+$router->get('/', function () {
+    (new AuthController())->splash();
+});
 
-// Dashboard Routes
-$router->get('/dashboard', [DashboardController::class, 'index']);
+$router->get('/auth/login', function () {
+    (new AuthController())->login();
+});
 
-// Transaction Routes
-$router->get('/transaction/index', [TransactionController::class, 'index']);
-$router->post('/transaction/create', [TransactionController::class, 'create']);
-$router->get('/transaction/delete', [TransactionController::class, 'delete']);
+$router->post('/auth/login', function () {
+    (new AuthController())->login();
+});
+
+$router->get('/auth/signup', function () {
+    (new AuthController())->signup();
+});
+
+$router->post('/auth/signup', function () {
+    (new AuthController())->signup();
+});
+
+$router->get('/auth/logout', function () {
+    (new AuthController())->logout();
+});
+
+/*
+|--------------------------------------------------------------------------
+| Dashboard
+|--------------------------------------------------------------------------
+*/
+$router->get('/dashboard', function () {
+    (new DashboardController())->index();
+});
+
+/*
+|--------------------------------------------------------------------------
+| Transactions
+|--------------------------------------------------------------------------
+*/
+$router->get('/transaction/index', function () {
+    (new TransactionController())->index();
+});
+
+$router->post('/transaction/create', function () {
+    (new TransactionController())->create();
+});
+
+$router->get('/transaction/delete', function () {
+    (new TransactionController())->delete();
+});
 
 $app->run();

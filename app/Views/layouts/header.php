@@ -6,27 +6,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Spender V2</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        body {
-            background-color: #f8f9fa;
-        }
-
-        .card {
-            border-radius: 15px;
-            border: none;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-
-        .navbar {
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-        }
-    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="/spender-v2/public/assets/css/style.css" rel="stylesheet">
 </head>
 
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-white mb-4">
+    <nav class="navbar navbar-expand-lg navbar-dark mb-4">
         <div class="container">
-            <a class="navbar-brand fw-bold text-primary" href="/spender-v2/public/dashboard">Spender</a>
+            <a class="navbar-brand fw-bold text-gradient" href="/spender-v2/public/dashboard">Spender</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
