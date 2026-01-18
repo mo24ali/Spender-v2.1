@@ -24,19 +24,19 @@
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-5">
-                <div class="glass-card p-5 text-center">
-                    <h1 class="text-gradient mb-3">Spender V2</h1>
+                <div class="card-premium p-5 text-center">
+                    <h1 class="text-primary mb-3">Spender V2</h1>
                     <p class="text-secondary mb-4">Manage your finances securely and effortlessly</p>
 
                     <div class="actions">
                         <a href="/spender-v2/public/auth/login"
-                            class="glass-btn w-100 d-block mb-3 text-white text-decoration-none">Login</a>
+                            class="btn btn-primary-premium w-100 d-block mb-3 text-white text-decoration-none">Login</a>
                         <a href="/spender-v2/public/auth/signup"
-                            class="glass-btn w-100 d-block bg-transparent border border-white text-white text-decoration-none">Create
+                            class="btn w-100 d-block border border-secondary text-secondary text-decoration-none">Create
                             Account</a>
                     </div>
 
-                    <footer class="mt-4 text-secondary text-sm">
+                    <footer class="mt-4 text-secondary small">
                         &copy; <?= date('Y') ?> Spender V2
                     </footer>
                 </div>

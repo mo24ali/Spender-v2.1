@@ -1,63 +1,40 @@
 :root {
-    --primary-color: #6366f1;
-    --secondary-color: #ec4899;
-    --success-color: #10b981;
-    --danger-color: #ef4444;
-    --warning-color: #f59e0b;
-    --info-color: #3b82f6;
-    --dark-bg: #0f172a;
-    --card-bg: rgba(255, 255, 255, 0.1);
-    --glass-border: rgba(255, 255, 255, 0.2);
-    --text-primary: #f8fafc;
-    --text-secondary: #cbd5e1;
-    --font-family: 'Inter', sans-serif;
+    /* Expensify-inspired Palette */
+    --primary-color: #1bbf23;
+    /* Expensify Green */
+    --secondary-color: #393e46;
+    /* Dark Blue/Grey */
+    --accent-color: #007aff;
+    /* Tech Blue */
+    --danger-color: #ff3b30;
+    --warning-color: #ffcc00;
+    --success-color: #1bbf23;
+
+    --bg-body: #f4f6f8;
+    /* Light neutral background */
+    --bg-card: #ffffff;
+    --bg-sidebar: #1e1e1e;
+    /* Dark sidebar for contrast */
+
+    --text-primary: #2d3436;
+    --text-secondary: #636e72;
+    --text-light: #f8fafc;
+
+    --shadow-soft: 0 4px 20px rgba(0, 0, 0, 0.05);
+    --shadow-hover: 0 8px 25px rgba(0, 0, 0, 0.1);
+
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 16px;
+
+    --font-family: 'Inter', system-ui, -apple-system, sans-serif;
 }
 
 body {
-    background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
+    background-color: var(--bg-body);
     color: var(--text-primary);
     font-family: var(--font-family);
-    min-height: 100vh;
-}
-
-/* Glassmorphism Classes */
-.glass-card {
-    background: var(--card-bg);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border: 1px solid var(--glass-border);
-    border-radius: 16px;
-    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-}
-
-.glass-input {
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid var(--glass-border);
-    color: var(--text-primary);
-    border-radius: 8px;
-    transition: all 0.3s ease;
-}
-
-.glass-input:focus {
-    background: rgba(255, 255, 255, 0.1);
-    border-color: var(--primary-color);
-    outline: none;
-    box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2);
-}
-
-.glass-btn {
-    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-    border: none;
-    color: white;
-    padding: 10px 20px;
-    border-radius: 8px;
-    font-weight: 600;
-    transition: transform 0.2s, box-shadow 0.2s;
-}
-
-.glass-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+    -webkit-font-smoothing: antialiased;
 }
 
 /* Typography */
@@ -68,73 +45,184 @@ h4,
 h5,
 h6 {
     font-weight: 700;
-    letter-spacing: -0.025em;
-    color: white;
+    color: var(--text-primary);
+    letter-spacing: -0.02rem;
 }
 
-a {
-    text-decoration: none;
-    transition: color 0.2s;
+.text-secondary {
+    color: var(--text-secondary) !important;
 }
 
-/* Sidebar / Navbar details */
-.navbar {
-    background: rgba(15, 23, 42, 0.8) !important;
-    backdrop-filter: blur(10px);
-    border-bottom: 1px solid var(--glass-border);
+.fw-bold {
+    font-weight: 700 !important;
+}
+
+/* Navbar */
+.navbar-premium {
+    background: var(--bg-card);
+    box-shadow: var(--shadow-soft);
+    padding: 1rem 2rem;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.navbar-brand {
+    font-weight: 800;
+    color: var(--text-primary);
+    font-size: 1.5rem;
+    letter-spacing: -0.03rem;
 }
 
 .nav-link {
+    font-weight: 600;
     color: var(--text-secondary) !important;
-    font-weight: 500;
+    padding: 0.5rem 1rem !important;
+    border-radius: var(--radius-sm);
+    transition: all 0.2s;
 }
 
 .nav-link:hover,
 .nav-link.active {
+    background-color: rgba(27, 191, 35, 0.1);
     color: var(--primary-color) !important;
 }
 
-/* Tables */
-.table {
-    color: var(--text-secondary);
-}
-
-.table thead th {
-    color: var(--text-primary);
-    border-bottom: 2px solid var(--glass-border);
-}
-
-.table td,
-.table th {
-    border-color: var(--glass-border);
-}
-
-/* Utilities */
-.text-gradient {
-    background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-}
-
-.badge {
-    padding: 0.5em 0.8em;
-    border-radius: 6px;
+.btn-primary-premium {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 0.6rem 1.2rem;
+    border-radius: var(--radius-sm);
     font-weight: 600;
+    box-shadow: 0 4px 12px rgba(27, 191, 35, 0.3);
+    transition: all 0.2s;
 }
 
-/* Specific Component Fixes */
-.card-header {
+.btn-primary-premium:hover {
+    background-color: #16a31c;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 16px rgba(27, 191, 35, 0.4);
+}
+
+/* Cards */
+.card-premium {
+    background: var(--bg-card);
+    border: none;
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-soft);
+    transition: transform 0.2s, box-shadow 0.2s;
+    overflow: hidden;
+}
+
+.card-premium:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-hover);
+}
+
+.card-header-premium {
     background: transparent;
-    border-bottom: 1px solid var(--glass-border);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    padding: 1.5rem;
 }
 
-.form-label {
+.card-title {
+    margin: 0;
+    font-size: 1.1rem;
+    font-weight: 700;
+}
+
+/* Stat Cards */
+.stat-card {
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.stat-value {
+    font-size: 2rem;
+    font-weight: 800;
+    margin: 0.5rem 0;
+    letter-spacing: -0.05rem;
+}
+
+.stat-label {
+    text-transform: uppercase;
+    font-size: 0.75rem;
     color: var(--text-secondary);
+    font-weight: 600;
+    letter-spacing: 0.05rem;
+}
+
+/* Tables */
+.table-premium {
+    margin-bottom: 0;
+}
+
+.table-premium thead th {
+    background-color: rgba(0, 0, 0, 0.02);
+    color: var(--text-secondary);
+    font-weight: 600;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    border-bottom: none;
+    padding: 1rem 1.5rem;
+}
+
+.table-premium tbody td {
+    vertical-align: middle;
+    padding: 1.2rem 1.5rem;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.03);
+    color: var(--text-primary);
     font-weight: 500;
 }
 
-select option {
-    background-color: var(--dark-bg);
-    color: var(--text-primary);
+.table-premium tbody tr:last-child td {
+    border-bottom: none;
+}
+
+/* Forms */
+.form-control-premium {
+    background-color: #f9fafb;
+    border: 1px solid #e2e8f0;
+    border-radius: var(--radius-sm);
+    padding: 0.8rem 1rem;
+    font-size: 0.95rem;
+    transition: all 0.2s;
+}
+
+.form-control-premium:focus {
+    background-color: #fff;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(27, 191, 35, 0.1);
+    outline: none;
+}
+
+/* Badges */
+.badge-premium {
+    padding: 0.4em 0.8em;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 0.75em;
+    letter-spacing: 0.03em;
+}
+
+.badge-expense {
+    background-color: rgba(255, 59, 48, 0.1);
+    color: var(--danger-color);
+}
+
+.badge-income {
+    background-color: rgba(27, 191, 35, 0.1);
+    color: var(--success-color);
+}
+
+/* Utility */
+.text-gradient {
+    /* Expensify isn't big on gradients, but we can keep a subtle one for the logo if needed */
+    background: linear-gradient(135deg, var(--primary-color), #0f172a);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
 }

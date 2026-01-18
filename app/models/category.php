@@ -21,4 +21,18 @@ class Category
         $stmt->execute([$userId]);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    public function create($name, $type, $userId)
+    {
+        $sql = "INSERT INTO categories (name, type, user_id) VALUES (?, ?, ?)";
+        $stmt = $this->db->prepare($sql);
+        return $stmt->execute([$name, $type, $userId]);
+    }
+
+    public function delete($id, $userId)
+    {
+        $sql = "DELETE FROM categories WHERE id = ? AND user_id = ?";
+        $stmt = $this->db->prepare($sql);
+        return $stmt->execute([$id, $userId]);
+    }
 }

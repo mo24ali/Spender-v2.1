@@ -51,9 +51,7 @@ class Transaction
                 LEFT JOIN categories c ON t.category_id = c.id 
                 WHERE t.user_id = ? 
                 ORDER BY t.transaction_date DESC LIMIT " . (int) $limit;
-        // Note: Limit is an integer, safe to interpolate if hardcoded or cast. 
-        // But for strict params, Postgres doesn't always like LIMIT ? without casting. 
-        // Let's use string concatenation for LIMIT since it's an internal int param here.
+       
 
         $stmt = $this->db->prepare($sql);
         $stmt->execute([$userId]);
@@ -65,6 +63,14 @@ class Transaction
         $sql = "DELETE FROM transactions WHERE id = ? AND user_id = ?";
         $stmt = $this->db->prepare($sql);
         return $stmt->execute([$id, $userId]);
+    }
+
+    public function getById($id, $userId)
+    {
+        $sql = "SELECT * FROM transactions WHERE id = ? AND user_id = ?";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute([$id, $userId]);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
     public function update($id, $title, $amount, $date, $type, $userId, $categoryId = null)
