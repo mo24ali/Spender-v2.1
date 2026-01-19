@@ -7,7 +7,7 @@ use PDO;
 
 class Card extends Model
 {
-    protected static $table = 'cards';
+    protected static $table = 'carte';
 
     public function getByUserId($userId)
     {
@@ -19,7 +19,7 @@ class Card extends Model
 
     public function create(array $data)
     {
-        $sql = "INSERT INTO cards (name, user_id, balance, credit_limit, expiry_date, card_number) 
+        $sql = "INSERT INTO carte (nom, user_id, currentsold, limite, expiredate,num) 
                 VALUES (?,?,?,?,?,?)";
         $stmt = $this->db->prepare($sql);
         return $stmt->execute([
@@ -34,7 +34,7 @@ class Card extends Model
 
     public function getById($id)
     {
-        $sql = "SELECT * FROM cards WHERE id = ?";
+        $sql = "SELECT * FROM carte WHERE id = ?";
         $stmt = $this->db->prepare($sql);
         $stmt->execute([$id]);
         return $stmt->fetch(PDO::FETCH_ASSOC);
@@ -42,14 +42,14 @@ class Card extends Model
 
     public function delete($id)
     {
-        $sql = "DELETE FROM cards WHERE id = ?";
+        $sql = "DELETE FROM carte WHERE id = ?";
         $stmt = $this->db->prepare($sql);
         return $stmt->execute([$id]);
     }
 
     public function update($id, array $data)
     {
-        $sql = "UPDATE cards SET name = ?, balance = ?, credit_limit = ?, expiry_date = ?, card_number = ? WHERE id = ?";
+        $sql = "UPDATE carte SET name = ?, balance = ?, credit_limit = ?, expiry_date = ?, card_number = ? WHERE id = ?";
         $stmt = $this->db->prepare($sql);
         return $stmt->execute([
             $data['name'],

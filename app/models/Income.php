@@ -7,11 +7,11 @@ use PDO;
 
 class Income extends Model
 {
-    protected static $table = 'incomes';
+    protected static $table = 'transactions';
 
     public function getByUserId($userId)
     {
-        $sql = "SELECT * FROM incomes WHERE user_id = ? ORDER BY created_at DESC";
+        $sql = "SELECT * FROM transactions WHERE user_id = ? AND type = 'income' ORDER BY transaction_date DESC";
         $stmt = $this->db->prepare($sql);
         $stmt->execute([$userId]);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -22,34 +22,23 @@ class Income extends Model
         try {
             $this->db->beginTransaction();
 
-            $sql = "INSERT INTO incomes (title, description, user_id, amount, category_id, date, created_at) 
-                    VALUES (?, ?, ?, ?, ?, ?, NOW())";
-            $stmt = $this->db->prepare($sql);
-            $stmt->execute([
-                $data['title'],
-                $data['description'],
-                $data['user_id'],
-                $data['amount'],
-                $data['category_id'],
-                $data['date']
-            ]);
-
-            // Add to card if selected
+            // Add to carte if selected
             if (!empty($data['card_id'])) {
-                $sql = "UPDATE cards SET balance = balance + ? WHERE id = ?";
+                $sql = "UPDATE carte SET balance = balance + ? WHERE id = ?";
                 $stmt = $this->db->prepare($sql);
                 $stmt->execute([$data['amount'], $data['card_id']]);
             }
 
-            // Log Transaction
+            // Log Transaction (This is now the primary record)
             $sql = "INSERT INTO transactions (title, description, user_id, type, amount, transaction_date, status, category_id, card_id) 
-                    VALUES (?, ?, ?, 'income', ?, NOW(), 'completed', ?, ?)";
+                    VALUES (?, ?, ?, 'income', ?, ?, 'completed', ?, ?)";
             $stmt = $this->db->prepare($sql);
             $stmt->execute([
                 $data['title'],
                 $data['description'],
                 $data['user_id'],
                 $data['amount'],
+                $data['date'] ?? date('Y-m-d'),
                 $data['category_id'],
                 $data['card_id'] ?? null
             ]);

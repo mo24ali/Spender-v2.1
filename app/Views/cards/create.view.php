@@ -8,7 +8,7 @@
 
 <body>
     <h1>Add New Card</h1>
-    <form action="/card/create" method="POST">
+    <form action="/spender-v2/public/cards/create" method="POST">
         <input type="text" name="name" placeholder="Card Name (e.g. Visa)" required>
         <input type="text" name="card_number" placeholder="Card Number (Last 4 digits)" required>
         <input type="number" step="0.01" name="balance" placeholder="Current Balance" required>

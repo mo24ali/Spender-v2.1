@@ -19,7 +19,7 @@ class CardController extends Controller
         $userId = $_SESSION['user_id'];
         $cards = $this->cardModel->getByUserId($userId);
 
-        $this->view('cards/index.view', ['cards' => $cards]);
+        $this->view('cards/index', ['cards' => $cards]);
     }
 
     public function create()
@@ -37,7 +37,8 @@ class CardController extends Controller
             if ($this->cardModel->create($data)) {
                 $this->redirect('/cards');
             } else {
-                // Handle error
+                // dump_die($data);
+                // echo "eyyooow";
             }
         } else {
             $this->view('cards/create.view');

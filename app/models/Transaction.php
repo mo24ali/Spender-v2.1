@@ -24,9 +24,10 @@ class Transaction
 
     public function getAll($userId)
     {
-        $sql = "SELECT t.*, c.name as category_name 
+        $sql = "SELECT t.*, c.name as category_name, cr.name as card_name 
                 FROM transactions t 
                 LEFT JOIN categories c ON t.category_id = c.id 
+                LEFT JOIN carte cr ON t.card_id = cr.id 
                 WHERE t.user_id = ? 
                 ORDER BY t.transaction_date DESC";
         $stmt = $this->db->prepare($sql);
@@ -51,7 +52,7 @@ class Transaction
                 LEFT JOIN categories c ON t.category_id = c.id 
                 WHERE t.user_id = ? 
                 ORDER BY t.transaction_date DESC LIMIT " . (int) $limit;
-       
+
 
         $stmt = $this->db->prepare($sql);
         $stmt->execute([$userId]);

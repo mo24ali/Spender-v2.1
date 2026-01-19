@@ -153,3 +153,10 @@ $router->post('/transaction/edit', function () {
 });
 
 $app->run();
+function dump_die($value)
+{
+    echo "<pre>";
+    var_dump($value);
+    echo "</pre>";
+    die();
+}

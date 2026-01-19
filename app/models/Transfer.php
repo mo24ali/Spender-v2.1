@@ -26,14 +26,14 @@ class Transfer extends Model
             // 2. Update Sender Balance (Assuming Cards for now, or User wallet logic)
             // If sender_id represents a Card:
             if (isset($data['sender_type']) && $data['sender_type'] == 'card') {
-                $sql = "UPDATE cards SET balance = balance - ? WHERE id = ?";
+                $sql = "UPDATE carte SET balance = balance - ? WHERE id = ?";
                 $stmt = $this->db->prepare($sql);
                 $stmt->execute([$data['amount'], $data['sender_id']]);
             }
 
             // 3. Update Receiver Balance
             if (isset($data['receiver_type']) && $data['receiver_type'] == 'card') {
-                $sql = "UPDATE cards SET balance = balance + ? WHERE id = ?";
+                $sql = "UPDATE carte SET balance = balance + ? WHERE id = ?";
                 $stmt = $this->db->prepare($sql);
                 $stmt->execute([$data['amount'], $data['receiver_id']]);
             }
